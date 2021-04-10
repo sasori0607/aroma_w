@@ -1,0 +1,65 @@
+{% extends 'content/base.html' %}
+{% load static %}
+
+{% block title %}  {% endblock %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+    <div class="about_block_1 container">
+        <div class="row">
+            <div class="col-md-6 text">
+                <div class="b2">
+                    <div>
+                        <h1>АРОМАТЫ, КОТОРЫЕ ГОВОРЯТ</h1>
+                        <p>
+                            Sister’s Aroma –  украинский бренд нишевой парфюмерии, который был создан сестрами Дашей и Юлей:
+                            «Больше всего мы ценим качество и делаем его доступным для каждого.»
+                        </p>
+
+                        <p>
+                            С 2018 года бренд вырос и уже представлен на рынках: Украины, России, Казахстана и Беларуси.
+                        </p>
+                        <p>
+                            Вся продукция содержит сертификаты европейского образца.
+                            В коллекцию бренда входят: нишевые парфюмы, ароматы для дома, духи для автомобилей, санитайзеры с
+                            нишевой композицией, smart кремы для тела, эко-свечи из соевого воска.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 img">
+                <img src="{% static 'content/img/bg_header.webp' %}" alt="">
+            </div>
+        </div>
+        <div class="about_block_2 container">
+            <h1 class="title">КОНТАКТЫ</h1>
+            <div class="row pt-5">
+                <div class="col-md-4">
+                    <p class="p-title">По общим вопросам</p>
+                    <br>
+                    <p><a href="tel:0800332659">0 800 33 26 59</a></p>
+                    <br>
+
+                    <div class="contact-item-worktime">Пн - Вс c 09:00 до 23:00<br>
+                    по киевскому времени</div>
+                    <div class="contact-item-email">
+					<p><a href="mailto:info@sistersaroma.com">info@sistersaroma.com</a></p>
+					</div>
+
+                </div>
+                <div class="col-md-3">
+                                        <p class="p-title">Другие номера</p>
+                    <br>
+                    <p><a href="tel:0503225977">050 32 25 977</a></p>
+                    <p><a href="tel:0503225977">050 32 25 977</a></p>
+                    <p><a href="tel:0503225977">050 32 25 977</a></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

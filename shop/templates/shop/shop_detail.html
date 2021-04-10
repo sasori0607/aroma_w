@@ -1,0 +1,75 @@
+{% extends 'content/base.html' %}
+{% load static %}
+
+{% block title %} {{ product.title }} {% endblock %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<!-- Возможна ошибка product замена на object решается-->
+<div class="container">
+    <nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/shop">Главная</a></li>
+    <li class="breadcrumb-item"><a href="/shop/{{ object.category }}">
+        {{ object.category_name }}
+    </a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ object.title }}</li>
+  </ol>
+</nav>
+ <h1>{{ object.title }}</h1>
+    <hr>
+    <div class="row">
+        <div class="col-sm-7">
+            <div class="  responsive_2 slaid  detail_slaider">
+              <div>
+                {% if object.img %}
+                    <img src="{{ object.img.url }}" alt="{{ object.title }}">
+                {% else %}
+                    <img src="/pictures/default.png" alt="{{ object.title }}">
+                {% endif %}
+              </div>
+              {% for imag in product.images.all %}
+                <div>
+                    <img src="{{ imag.image.url }}" alt="{{ product.title }}">
+                </div>
+              {% endfor %}
+
+            </div>
+            <form class="form-prod">
+
+                {% csrf_token %}
+                <input class="same-info" type="hidden" name="info" value="{{product.get_absolute_url}}">
+                <button type="submit" class="btn_korz"> <img src="{% static 'content/img/kzn.png' %}" height="30px" class="korz-detail" alt="+++"> </button>
+
+            </form>
+
+
+
+
+
+
+        </div>
+        <div class="col float-right">
+            <div class="border p-2 m-2">
+                <h5>Описание товара</h5>
+                <hr>
+                <p>{{object.description}}</p>
+            </div>
+            <div class="border p-2 m-2">
+                <h5>Оплата </h5>
+                <hr>
+                <p>Наличная, Картой онлайн, Google Pay, Безналичными для юридических лиц, Безналичными для физических лиц, PrivatPay, Apple Pay</p>
+            </div>
+            <div class="border p-2 m-2">
+                <h5>Гарантия </h5>
+                <hr>
+                <p>Обмен/возврат товара в течение 14 дней</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

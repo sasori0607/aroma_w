@@ -1,0 +1,135 @@
+{% extends 'content/base.html' %}
+{% load static %}
+
+{% block title %}  {% endblock %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<div class="firstB">
+    <div class="text">
+        <h4><span>Ароматы, которые говорят</span></h4>
+        <p><span>Каждый аромат говорит о сокровенном и является</span></p>
+        <p>связующим звеном между прошлым и настоящим</p>
+    </div>
+</div>
+
+<div class="secondB row block">
+    <div class="col-md-6 block1" data-aos="fade-down" ><a href="">Свечи</a></div>
+    <div class="col-md-6 block2" data-aos="fade-right"><a href="">Ароматы для дома</a></div>
+    <div class="col-md-6 block3" data-aos="fade-down"><a href="">Парфюмы</a></div>
+    <div class="col-md-6 block4" data-aos="fade-down-right"><a href="">Уход за телом</a></div>
+</div>
+
+
+<div class="thirdB container mb-5">
+    <h4>Лучшие товары месяца</h4>
+        <div class="row center_item">
+
+            <div class="shop_product col-md-3   border-right border-bottom pb-2" >
+                <h4 class="">fagsd gsdfg</h4>
+                <div class = "img_sqe">
+                    <img src="https://yt3.ggpht.com/ytc/AAUvwnjLNDA2oeDSVztQyosqNL8qBqPlpBBasvQjjxPi=s900-c-k-c0x00ffffff-no-rj" alt="123">
+                </div>
+                <div class="row btns">
+                    <div class="bttn">
+                        <a href="{{product.get_absolute_url}}"><button  class="btn btn-warning my_btn_product ml-2">Детали</button></a>
+                    </div>
+                    <div class="bttn">
+                        <form class="form-prod">
+                            {% csrf_token %}
+                            <input class="same-info" type="hidden" name="info" value="{{product.slug}}">
+                            <button type="submit" class="btn_korz"> <img src="{% static 'content/img/kzn.png' %}" class="korz" alt="+++"> </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shop_product col-md-3   border-right border-bottom pb-2" >
+                <h4 class="">fagsd gsdfg</h4>
+                <div class = "img_sqe">
+                    <img src="https://yt3.ggpht.com/ytc/AAUvwnjLNDA2oeDSVztQyosqNL8qBqPlpBBasvQjjxPi=s900-c-k-c0x00ffffff-no-rj" alt="123">
+                </div>
+                <div class="row btns">
+                    <div class="bttn">
+                        <a href="{{product.get_absolute_url}}"><button  class="btn btn-warning my_btn_product ml-2">Детали</button></a>
+                    </div>
+                    <div class="bttn">
+                        <form class="form-prod">
+                            {% csrf_token %}
+                            <input class="same-info" type="hidden" name="info" value="{{product.slug}}">
+                            <button type="submit" class="btn_korz"> <img src="{% static 'content/img/kzn.png' %}" class="korz" alt="+++"> </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shop_product col-md-3   border-right border-bottom pb-2" >
+                <h4 class="">fagsd gsdfg</h4>
+                <div class = "img_sqe">
+                    <img src="https://yt3.ggpht.com/ytc/AAUvwnjLNDA2oeDSVztQyosqNL8qBqPlpBBasvQjjxPi=s900-c-k-c0x00ffffff-no-rj" alt="123">
+                </div>
+                <div class="row btns">
+                    <div class="bttn">
+                        <a href="{{product.get_absolute_url}}"><button  class="btn btn-warning my_btn_product ml-2">Детали</button></a>
+                    </div>
+                    <div class="bttn">
+                        <form class="form-prod">
+                            {% csrf_token %}
+                            <input class="same-info" type="hidden" name="info" value="{{product.slug}}">
+                            <button type="submit" class="btn_korz"> <img src="{% static 'content/img/kzn.png' %}" class="korz" alt="+++"> </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shop_product col-md-3   border-right border-bottom pb-2" >
+                <h4 class="">fagsd gsdfg</h4>
+                <div class = "img_sqe">
+                    <img src="https://yt3.ggpht.com/ytc/AAUvwnjLNDA2oeDSVztQyosqNL8qBqPlpBBasvQjjxPi=s900-c-k-c0x00ffffff-no-rj" alt="123">
+                </div>
+                <div class="row btns">
+                    <div class="bttn">
+                        <a href="{{product.get_absolute_url}}"><button  class="btn btn-warning my_btn_product ml-2">Детали</button></a>
+                    </div>
+                    <div class="bttn">
+                        <form class="form-prod">
+                            {% csrf_token %}
+                            <input class="same-info" type="hidden" name="info" value="{{product.slug}}">
+                            <button type="submit" class="btn_korz"> <img src="{% static 'content/img/kzn.png' %}" class="korz" alt="+++"> </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+</div>
+
+
+<div class="fourthB" data-aos="fade-right" data-aos-easing="ease-in-sine">
+    <div class="container">
+        <p class="mb-4 pt-4">Новый продукт от Sister's Aroma</p>
+        <p class="text">Эко-свеча</p>
+        <p class="text">с соевым воском и густым</p>
+        <p class="mb-4 text">ароматом</p>
+
+        <p class="pt-4">Стоимость — 690 грн</p>
+
+    </div>
+</div>
+
+
+
+<style>
+    .firstB{background-image: url( "{% static 'content/img/background.png' %}")}
+    .secondB .block1{background-image: url( "https://sistersaroma.com/upload/iblock/7de/7de673f4ec065b9bd9dd774e94c851c4.webp")}
+    .secondB .block2{background-image: url( "{% static 'content/img/img_2.png' %}")}
+    .secondB .block3{background-image: url( "{% static 'content/img/img_3.png' %}")}
+    .secondB .block4{background-image: url( "{% static 'content/img/img_4.png' %}")}
+    .fourthB{background-image: url( "https://sistersaroma.com/upload/iblock/7de/7de673f4ec065b9bd9dd774e94c851c4.webp")}
+
+</style>
+
+{% endblock %}

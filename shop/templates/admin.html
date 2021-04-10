@@ -1,0 +1,37 @@
+{% extends 'admin/change_form.html' %}
+{% load static %}
+
+{% block admin_change_form_document_ready %}
+{{ block.super }}
+<script>
+(function($) {
+    $('#id_category').prop('readonly', true)
+    $('#id_2_volume').on('click', function(){
+    if($(this).prop('checked') == true){
+        $('#id_volume2').prop('readonly', false)
+        $('#id_volume1').prop('readonly', false)
+        $('#id_prise2').prop('readonly', false)
+        $('#id_volume2').val('')
+        $('#id_volume1').val('')
+        $('#id_prise2').val('')
+        $('#id_volume2').css('background', 'white')
+        $('#id_volume1').css('background', 'white')
+        $('#id_prise2').css('background', 'white')
+
+    }else{
+        $('#id_volume2').prop('readonly', true)
+        $('#id_volume1').prop('readonly', true)
+        $('#id_prise2').prop('readonly', true)
+        $('#id_volume2').val('')
+        $('#id_volume1').val('')
+        $('#id_prise2').val('')
+        $('#id_volume2').css('background', 'lightgray')
+        $('#id_volume1').css('background', 'lightgray')
+        $('#id_prise2').css('background', 'lightgray')
+
+    }
+
+    })
+})(django.jQuery);
+</script>
+{% endblock %}

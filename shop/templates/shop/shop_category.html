@@ -1,0 +1,92 @@
+{% extends 'content/base.html' %}
+{% load static %}
+
+{% block title %} {{ slug }} {% endblock %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+
+    <div class="row">
+
+      <div class="col-lg-3">
+
+        <h1 class="my-4">Shop Name</h1>
+        <div class="list-group">
+           {% for categor in category %}
+            <a href="{{categor.slug}}" class="list-group-item">{{categor.title}}</a>
+           {% endfor %}
+        </div>
+
+      </div>
+      <!-- /.col-lg-3 -->
+
+      <div class="col-lg-9">
+
+
+
+        <div class="shop_products container ">
+    <div aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/shop">Главная</a></li>
+    <li class="breadcrumb-item active" aria-current="page">
+        {% for product in products %}
+            {% if product.category.slug == slug%}
+                {% cycle product.category.title  as rowcolors %}
+            {% endif %}
+        {% endfor %}
+    </li>
+  </ol>
+</div>
+            </div>
+
+
+
+
+        <div class=" row center_item">
+            {% for product in products %}
+                {% if product.category.slug == slug %}
+                    <div class="shop_product col-md-3 col-sm-4  border-right border-bottom pb-2" >
+                        <h4 class="">{{ product.title }}</h4>
+            <!--            <p>{{product.description}}</p>-->
+                        <div class = "img_sqe">
+                        {% if product.img %}
+                            <img src="{{ product.img.url }}" alt="{{ product.title }}">
+                        {% else %}
+                            <img src="/pictures/default.png" alt="{{ product.title }}">
+                        {% endif %}
+                        </div>
+                        <div class="row btns">
+                            <div class="row btns">
+                                    <div class="bttn">
+                                        <a href="{{product.get_absolute_url}}"><button  class="btn btn-warning my_btn_product ml-2">Детали</button></a>
+                                    </div>
+                                    <div class="bttn">
+                                        <form class="form-prod">
+                                            {% csrf_token %}
+                                            <input class="same-info" type="hidden" name="info" value="{{product.slug}}">
+                                            <button type="submit" class="btn_korz"> <img src="{% static 'content/img/kzn.png' %}" class="korz" alt="+++"> </button>
+                                        </form>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+        </div>
+
+        <!-- /.row -->
+
+      </div>
+      <!-- /.col-lg-9 -->
+
+    </div>
+    <!-- /.row -->
+
+  </div>
+
+{% endblock %}

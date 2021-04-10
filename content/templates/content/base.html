@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title> {% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'content/main.css' %}">
+    <!--    Подключка Слайдера-->
+    <link rel="stylesheet" type="text/css" href="{% static 'slick/slick.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'slick/slick-theme.css' %}">
+    <!--    Подключка Анимаций-->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    {% block head %}
+
+    {% endblock %}
+</head>
+<body>
+    <nav class="">
+        <div class="container">
+            <div class="">
+                <div class="logo float-left">
+                    <a href="/"><img src="{% static 'content/img/logo_big.svg' %}" alt=""  height="25px"></a>
+                </div>
+                <div class="row float-right">
+                    <div class="menu row">
+                        <ul class="info">
+                            <li><a href="{% url 'shop_main' %}">Магазин</a></li>
+                            <li><a href="{% url 'about' %}">О нас</a></li>
+                            <li><a href="">Блог</a></li>
+                            <li><a href="">Где нас найти?</a></li>
+                        </ul>
+                    <div>
+
+                    <div class="menu ">
+                        <ul class="row">
+                            <li><div>Поиск</div></li>
+                            <li class="">
+                                <form class="basket navbar-brand">
+                                    {% csrf_token %}
+                                    <a href="{% url 'you_basket' %}">
+                                        <img src="{% static 'content/img/kzn.png' %}" height="40px;" alt="">
+                                        <div class="basket_item">0</div>
+                                    </a>
+
+                                </form>
+                            </li>
+                            <li id="menuCheck"><img src="{% static 'content/img/menu.png' %}" width="40px" alt=""></li>
+                            <li>
+                                <div class="newLayer row">
+                                    <div id="menu"class="col-md-5">
+                                        <ul>
+                                            <div class="close">x</div>
+
+                                        </ul>
+                                    </div>
+                                    <div class="black col-md-7  ">+</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="content">
+    {% if messages %}
+        {% for mess in messages %}
+            <div class="alert alert-success">{{mess}}</div>
+        {% endfor %}
+    {% endif %}
+
+    {% block body %}
+
+    {% endblock %}
+
+    </div>
+
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <h6>Магазин</h6>
+                </div>
+                <div class="col-md-3">
+                    <h6>О нас</h6>
+                </div>
+                <div class="col-md-3">
+                    <h6>Магазин</h6>
+                </div>
+                <div class="col-md-3">
+                    <h6>Магазин</h6>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+<!--    Все JS-->
+<div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="{% static 'slick/slick.min.js' %}"></script>
+        <!--    Подключка Анимаций-->
+     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script type="text/javascript" src="{% static 'content/main.min.js' %}"></script>
+
+</div>
+
+</body>
+</html>
