@@ -8,83 +8,82 @@
 {% endblock %}
 
 {% block body %}
-
     <div class="container mt-5">
         <h3>Корзина</h3>
         <hr>
     </div>
-
-    {% for i in object %}
-        <div class="container">
-            {% if i.slug in deffi.keys  %}
-                <div class=" row you_basket {{i.slug}}">
-                    <div class="img_block col-4 col-md-3">
-                        <div class="img-body">
-                            <img src="{{ i.img.url }}" alt="{{ i.slug }}">
-                        </div>
-
-                    </div>
-                    <div class="text col-8 col-md-9">
-                        <div class="line">
-                            <h6><a href="{{ i.get_absolute_url }}">{{ i.title }}</a></h6>
-                        </div>
-                        <div class="input">
-                            <div class="row">
-                                <form class="form-prod-minus col-2">
-                                    {% csrf_token %}
-                                    <input class="same-info" type="hidden" name="info" value="{{i.slug}}">
-                                    <button type="submit" class="btn_korz"> <img src="{% static 'shop/img/minus.png' %}" class="korz" alt="+++"> </button>
-                                </form>
-                                <div class="quantity-div">
-                                    <p class="col-2 quantity ">
-                                        {% for ii, iii in deffi.items %}{% if i.slug == ii %}{{iii}}{% endif %}{% endfor %}
-                                    </p>
-                                </div>
-
-                                <form class="form-prod form-prod-plus col-2">
-                                    {% csrf_token %}
-                                    <input class="same-info" type="hidden" name="info" value="{{i.slug}}">
-                                    <button type="submit" class="btn_korz"> <img src="{% static 'shop/img/plus.png' %}" class="korz" alt="+++"> </button>
-                                </form>
-                            </div>
-
-                        </div>
-                        <div class="money">
-                            {% for ii, iii in deffi.items %}
-                            {% if i.slug == ii %}
-                            Цена:
-                            {% widthratio iii 1 i.prise1 %}
-
-                            {% endif %}
-                            {% endfor %}
-                        </div>
-                    </div>
+    <div class="container">
+    {% for i in basket %}
+        <div class=" row you_basket {{i.slug}} {{i.slug}}_{{i.price}}">
+            <div class="img_block col-4 col-md-3">
+                <div class="img-body row">
+                    <img src="{{ i.img_url }}" alt="{{ i.slug }}">
                 </div>
-            {% endif %}
-         </div>
+            </div>
+            <div class="text col-8 col-md-9 {{i.price}}">
+                <div class="line">
+                    <h6><a href="{{ i.get_absolute_url }}">
+                        {{ i.title }}
+                        {% if i.volume != 0 %}
+                        {{i.volume}}мл
+                        {% endif %}
+                    </a></h6>
+
+                </div>
+                <div class="input">
+                    <div class="row">
+                        <form class="form-prod-minus col-2">
+                            {% csrf_token %}
+                            <input class="same-info" type="hidden" readonly name="info" value="{{i.slug}}">
+                            <input type="hidden" class="main_price" readonly value="{{i.price}}">
+                            <input type="hidden" class="main_volume" readonly value="{{i.volume}}">
+
+                            <button type="submit" class="btn_korz">
+                                <input type="hidden" class="main_price" readonly value="{{i.price}}">
+                                <img src="{% static 'shop/img/minus.png' %}" class="korz" alt="+++">
+                            </button>
+                        </form>
+                        <div class="quantity-div">
+                            <p class="col-2 quantity ">
+                                {{i.quantity}}
+                            </p>
+                        </div>
+
+                        <form class="form-prod form-prod-plus col-2">
+                            {% csrf_token %}
+                            <input class="same-info" type="hidden" readonly name="info" value="{{i.slug}}">
+                            <input type="hidden" class="main_price" readonly value="{{i.price}}">
+                            <input type="hidden" class="main_volume" readonly value="{{i.volume}}">
+
+                            <button type="submit" class="btn_korz">
+                                <input type="hidden" class="main_price" readonly value="{{i.price}}">
+                                <img src="{% static 'shop/img/plus.png' %}" class="korz" alt="+++">
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="money">
+                    {% widthratio i.quantity 1 i.price %} ₴
+                </div>
+            </div>
+        </div>
+
+        <div class="checkout">
+            <div class="full-value row">
+                <p>Итого</p>
+                <p class="sum"></p>
+            </div>
+
+            <div class="btn">
+                <form action="">
+                    <button class="btn">Оформить заказ</button>
+                </form>
+            </div>
+        </div>
+
+
     {% endfor %}
-
-
-    <div class="checkout">
-
-        <div class="full-value row">
-            <p>Итого</p>
-            <p class="sum"></p>
-        </div>
-
-        <div class="btn">
-            <form action="">
-                <button class="btn">Оформить заказ</button>
-            </form>
-        </div>
     </div>
-
-
-    <script type="text/javascript">
-        let price = {}
-        {% for i in object %}
-            price.{{i.slug}} = {{i.prise1}}
-        {% endfor %}
-    </script>
 
 {% endblock %}

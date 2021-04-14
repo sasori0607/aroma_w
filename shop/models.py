@@ -19,15 +19,40 @@ class Category(models.Model):
         reverse('shop_category', kwargs={'slug': self.category.slug})
 
 
+class Gallery(models.Model):
+    image = models.ImageField(upload_to='gallery')
+    product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='images')
+
+
 class Product(models.Model):
 
    slug = models.SlugField(unique=True)
    vendorСode = models.CharField(max_length=120, verbose_name='Артикул')
    category = models.ForeignKey('Category', verbose_name='Категория', on_delete=models.CASCADE)
    title = models.CharField(max_length=120, verbose_name='Имя товара')
-   description = models.TextField()
-   prise1 = models.DecimalField(max_digits=9, decimal_places=2, verbose_name='цена(если 2 объема, цена за меньший)')
-   img = models.ImageField(default='default.png', upload_to='goods_img')
+   description = models.TextField(verbose_name='Описание')
+   volumeTrue = models.BooleanField(verbose_name='Наличие 2ух объемов', default=True)
+   prise1 = models.DecimalField(max_digits=9, decimal_places=0, verbose_name='цена(если 2 объема, цена за меньший)')
+   volume1 = models.DecimalField(max_digits=9, decimal_places=0, null=True, blank=True, verbose_name='объем(меньший), если указан')
+   volume2 = models.DecimalField(max_digits=9, decimal_places=0, null=True, blank=True, verbose_name='объем(больший)')
+   prise2 = models.DecimalField(max_digits=9, decimal_places=0, null=True, blank=True,
+                                verbose_name='цена за больший объем')
+   img = models.ImageField(default='default.png', upload_to='goods_img',verbose_name='Превью изображение')
+   newTrue = models.BooleanField(verbose_name='Является ли Новинкой', default=True)
+   bestsellerTrue = models.BooleanField(verbose_name='Является ли Bestsellerом', default=False)
+   yulia = models.BooleanField(verbose_name='Юлия рекомендует', default=False)
+   darina = models.BooleanField(verbose_name='Дарина рекомендует', default=False)
+
+   # Доп модели
+   complect = models.TextField(verbose_name='В комплекте', null=True, blank=True)
+   grup_aromat = models.CharField(max_length=120, verbose_name='ГРУППА АРОМАТА', null=True, blank=True)
+   top_notes = models.CharField(max_length=120, verbose_name='ВЕРХНИЕ НОТЫ', null=True, blank=True)
+   heart_notes = models.CharField(max_length=120, verbose_name='НОТЫ СЕРДЦА', null=True, blank=True)
+   base_notes = models.CharField(max_length=120, verbose_name='БАЗОВЫЕ НОТЫ', null=True, blank=True)
+   link = models.URLField(verbose_name='Ссылка на видео', null=True, blank=True)
+
+
+
 
    class Meta:
        verbose_name = '0Весь ассортимент'
@@ -42,56 +67,19 @@ class Product(models.Model):
 
 
 
-
-
-class ProductSet(Product):
-
-    volumeTrue = models.BooleanField(name='2_volume', verbose_name='Наличие 2ух объемов', default=True)
-    volume1 = models.DecimalField(max_digits=9, decimal_places=0, null=True, blank=True, verbose_name='объем(меньший)')
-    volume2 = models.DecimalField(max_digits=9, decimal_places=0, null=True, blank=True, verbose_name='объем(больший)')
-    prise2 = models.DecimalField(max_digits=9, decimal_places=2, null=True, blank=True, verbose_name='цена за больший объем')
-
-    class Meta:
-        verbose_name = 'Наборы'
-        verbose_name_plural = 'Наборы'
-
-    def __str__(self):
-        return self.title
-
-    def get_absolute_url(self):
-        return reverse('shop_detail', kwargs={'slug': self.slug, 'category': self.category})
-
-
-
-
-
-
-
-class ProductBestsellers(Product):
-
-    volumeTrue = models.BooleanField(name='2_volume', verbose_name='Наличие 2ух объемов', default=True)
-    volume1 = models.DecimalField(max_digits=9, decimal_places=0, null=True, blank=True, verbose_name='объем(меньший)')
-    volume2 = models.DecimalField(max_digits=9, decimal_places=0, null=True, blank=True, verbose_name='объем(больший)')
-    prise2 = models.DecimalField(max_digits=9, decimal_places=2, null=True, blank=True, verbose_name='цена за больший объем')
-    aromat = models.CharField(max_length=120, verbose_name='аромат')
-
-    class Meta:
-        verbose_name = 'Бестселлеры'
-        verbose_name_plural = 'Бестселлеры'
-
-    def __str__(self):
-        return self.title
-
-    def get_absolute_url(self):
-
-        return reverse('shop_detail', kwargs={'slug': self.slug, 'category': self.category})
-
-
-
-
-
 class Basket(models.Model):
     session_key = models.CharField(max_length=128)
     slug = models.CharField(max_length=128)
-    quantity = models.IntegerField(default=1)
+    title = models.CharField(max_length=128)
+    vendorСode = models.CharField(max_length=120, verbose_name='Артикул')
+    category = models.CharField(max_length=120, verbose_name='Категория')
+    volume = models.IntegerField(default=0, verbose_name="Объем", null=True, blank=True, )
+    price = models.DecimalField(max_digits=9, decimal_places=0, verbose_name="Цена")
+    quantity = models.IntegerField(default=1, verbose_name="Количество")
+    img_url = models.CharField(max_length=120, verbose_name='Ссылка на img')
     article_date = models.DateTimeField(default=datetime.datetime.now())
+
+    def get_absolute_url(self):
+        return reverse('shop_detail', kwargs={'slug': self.slug, 'category': self.category})
+
+

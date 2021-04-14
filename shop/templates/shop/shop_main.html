@@ -17,7 +17,7 @@
         <h1 class="my-4">Shop Name</h1>
         <div class="list-group">
            {% for categor in category %}
-            <a href="{{categor.slug}}" class="list-group-item">{{categor.title}}</a>
+            <a href="{{categor.slug}}" class="list-group-item transition">{{categor.title}}</a>
            {% endfor %}
         </div>
 
@@ -53,10 +53,10 @@
           </a>
         </div>
 
-        <div class="row">
+
             <div class="row center_item">
                 {% for product in products %}
-                        <div class="shop_product col-md-3 col-sm-4  border-right border-bottom pb-2" >
+                        <div class="shop_product {{product.slug}} col-md-3 col-sm-4  border-right border-bottom pb-2" >
                             <h4 class="">{{ product.title }}</h4>
                 <!--            <p>{{product.description}}</p>-->
 
@@ -67,7 +67,34 @@
                                 <img src="/pictures/default.png" alt="{{ product.title }}">
                             {% endif %}
                             </div>
+                            <div class="btn_volume">
+                                <div class="row btn">
+                                    {% if product.volumeTrue %}
+                                        <button class="btn_volume_1" disabled="true">
+                                            {{product.volume1}}ml
+                                            <input type="hidden" class="btn_prise1" readonly value="{{product.prise1}}">
+                                            <input type="hidden" class="btn_volume1" readonly value="{{product.volume1}}">
+                                            <input type="hidden" class="slug" readonly value="{{ product.slug }}">
+                                        </button>
 
+                                        <button class="btn_volume_2">
+                                            {{product.volume2}}ml
+                                            <input type="hidden" class="btn_prise2" readonly value="{{product.prise2}}">
+                                            <input type="hidden" class="btn_volume2" readonly value="{{product.volume2}}">
+                                            <input type="hidden" class="slug" readonly value="{{ product.slug }}">
+                                        </button>
+                                    {% else %}
+                                        {% if product.volume1 %}
+                                        <button class="btn_volume_1" disabled="true">{{product.volume1}}ml</button>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="btn_prise">
+                                    <div class="price">
+                                        {{product.prise1}} грн.
+                                    </div>
+                            </div>
 
                             <div class="row btns">
                                 <div class="bttn">
@@ -77,7 +104,11 @@
                                     <form class="form-prod">
                                         {% csrf_token %}
                                         <input class="same-info" type="hidden" name="info" value="{{product.slug}}">
-                                        <button type="submit" class="btn_korz"> <img src="{% static 'content/img/kzn.png' %}" class="korz" alt="+++"> </button>
+                                        <button type="submit" class="btn_korz">
+                                            <input type="hidden" class="main_price" readonly value="{{product.prise1}}">
+                                            <input type="hidden" class="main_volume" readonly value="{{product.volume1}}">
+                                            <img src="{% static 'content/img/kzn.png' %}" class="korz" alt="+++">
+                                        </button>
                                     </form>
                                 </div>
                             </div>
@@ -86,9 +117,52 @@
                 {% endfor %}
 
             </div>
-        </div>
-        <!-- /.row -->
 
+        <!-- /.row -->
+        <div class="row pages">
+            {% if is_paginated %}
+                {% if page_obj.number > 5 %}
+                <a href="{% url 'shop_main' %}">1</a>
+                    <p>...</p>
+                {% endif %}
+                {% if page_obj.number == 5 %}
+                    <a href="{% url 'shop_main' %}">1</a>
+                {% endif %}
+                {% if page_obj.number > 3 %}
+                    <a href="?page={{ page_obj.number |add:'-3' }}" >{{ page_obj.number |add:'-3' }}</a>
+                {% endif %}
+                {% if page_obj.number > 2 %}
+                    <a href="?page={{ page_obj.number |add:'-2' }}" >{{ page_obj.number |add:'-2' }}</a>
+                {% endif %}
+                {% if page_obj.number > 1 %}
+                     <a href="?page={{ page_obj.number |add:'-1' }}" >{{ page_obj.number |add:'-1' }}</a>
+                {% endif %}
+
+
+                <a href="" style="text-decoration:underline ">{{ page_obj.number }}</a>
+
+
+                {% if page_obj.paginator.num_pages > page_obj.number %}
+                     <a href="?page={{ page_obj.number |add:'1' }}" >{{ page_obj.number |add:'1' }}</a>
+                {% endif %}
+                {% if page_obj.paginator.num_pages|add:'-1' > page_obj.number %}
+                    <a href="?page={{ page_obj.number |add:'2' }}" >{{ page_obj.number |add:'2' }}</a>
+                {% endif %}
+                {% if page_obj.paginator.num_pages|add:'-2' > page_obj.number %}
+                   <a href="?page={{ page_obj.number |add:'3' }}" >{{ page_obj.number |add:'3' }}</a>
+                {% endif %}
+
+                {% if page_obj.paginator.num_pages|add:'-4' == page_obj.number %}
+                    <a href="?page={{page_obj.paginator.num_pages}}" >{{page_obj.paginator.num_pages}}</a>
+                {% endif %}
+
+                {% if page_obj.paginator.num_pages|add:'-4' > page_obj.number %}
+                    <p>...</p>
+                    <a href="?page={{page_obj.paginator.num_pages}}" >{{page_obj.paginator.num_pages}}</a>
+                {% endif %}
+
+            {% endif %}
+        </div>
       </div>
       <!-- /.col-lg-9 -->
 
@@ -96,5 +170,52 @@
     <!-- /.row -->
 
   </div>
+
+
+<!--    <div class="row pages">-->
+<!--        {% if is_paginated %}-->
+<!--            {% if page_obj.number > 5 %}-->
+<!--            <a href="{% url 'shop_main' %}">1</a>-->
+<!--                <p>...</p>-->
+<!--            {% endif %}-->
+<!--            {% if page_obj.number == 5 %}-->
+<!--                <a href="{% url 'shop_main' %}">1</a>-->
+<!--            {% endif %}-->
+<!--            {% if page_obj.number > 3 %}-->
+<!--                <a href="?page={{ page_obj.number |add:'-3' }}" >{{ page_obj.number |add:'-3' }}</a>-->
+<!--            {% endif %}-->
+<!--            {% if page_obj.number > 2 %}-->
+<!--                <a href="?page={{ page_obj.number |add:'-2' }}" >{{ page_obj.number |add:'-2' }}</a>-->
+<!--            {% endif %}-->
+<!--            {% if page_obj.number > 1 %}-->
+<!--                 <a href="?page={{ page_obj.number |add:'-1' }}" >{{ page_obj.number |add:'-1' }}</a>-->
+<!--            {% endif %}-->
+
+
+<!--            <a href="" style="text-decoration:underline ">{{ page_obj.number }}</a>-->
+
+
+<!--            {% if page_obj.paginator.num_pages > page_obj.number %}-->
+<!--                 <a href="?page={{ page_obj.number |add:'1' }}" >{{ page_obj.number |add:'1' }}</a>-->
+<!--            {% endif %}-->
+<!--            {% if page_obj.paginator.num_pages|add:'-1' > page_obj.number %}-->
+<!--                <a href="?page={{ page_obj.number |add:'2' }}" >{{ page_obj.number |add:'2' }}</a>-->
+<!--            {% endif %}-->
+<!--            {% if page_obj.paginator.num_pages|add:'-2' > page_obj.number %}-->
+<!--               <a href="?page={{ page_obj.number |add:'3' }}" >{{ page_obj.number |add:'3' }}</a>-->
+<!--            {% endif %}-->
+
+<!--            {% if page_obj.paginator.num_pages|add:'-4' == page_obj.number %}-->
+<!--                <a href="?page={{page_obj.paginator.num_pages}}" >{{page_obj.paginator.num_pages}}</a>-->
+<!--            {% endif %}-->
+
+<!--            {% if page_obj.paginator.num_pages|add:'-4' > page_obj.number %}-->
+<!--                <p>...</p>-->
+<!--                <a href="?page={{page_obj.paginator.num_pages}}" >{{page_obj.paginator.num_pages}}</a>-->
+<!--            {% endif %}-->
+
+<!--        {% endif %}-->
+<!--    </div>-->
+
 
 {% endblock %}

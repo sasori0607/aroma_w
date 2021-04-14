@@ -1,73 +1,154 @@
 {% extends 'content/base.html' %}
 {% load static %}
 
-{% block title %} {{ product.title }} {% endblock %}
+{% block title %} {{ object.title }} {% endblock %}
 
 {% block head %}
 
 {% endblock %}
 
 {% block body %}
-<!-- Возможна ошибка product замена на object решается-->
-<div class="container">
-    <nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="/shop">Главная</a></li>
-    <li class="breadcrumb-item"><a href="/shop/{{ object.category }}">
-        {{ object.category_name }}
-    </a></li>
-    <li class="breadcrumb-item active" aria-current="page">{{ object.title }}</li>
-  </ol>
-</nav>
- <h1>{{ object.title }}</h1>
-    <hr>
+<div class="container shop_detail {{object.slug}} mt-4">
+
+
     <div class="row">
-        <div class="col-sm-7">
-            <div class="  responsive_2 slaid  detail_slaider">
-              <div>
-                {% if object.img %}
-                    <img src="{{ object.img.url }}" alt="{{ object.title }}">
-                {% else %}
-                    <img src="/pictures/default.png" alt="{{ object.title }}">
-                {% endif %}
-              </div>
-              {% for imag in product.images.all %}
-                <div>
+        <div class="col-sm-6">
+            <div class=" container ">
+                <div aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/shop">Главная</a></li>
+                     <li class="breadcrumb-item"><a href="/shop/{{ object.category }}">
+                        {{ object.category.title }}
+                    </a></li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        {{object.title}}
+                    </li>
+                  </ol>
+                </div>
+            </div>
+
+            <div class="main_img">
+
+                    {% for product in object.images.all|slice:":1"  %}
+                        <img src="{{ product.image.url}}" alt="{{ object.title }}">
+                    {% endfor %}
+            </div>
+            <div class="row gal">
+              {% for imag in object.images.all %}
+                <div class="gal_img">
                     <img src="{{ imag.image.url }}" alt="{{ product.title }}">
                 </div>
               {% endfor %}
-
+               {% if object.link %}
+              <iframe src="{{object.link}}"
+                      title="YouTube video player" frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen></iframe>
+               {% endif %}
             </div>
-            <form class="form-prod">
-
-                {% csrf_token %}
-                <input class="same-info" type="hidden" name="info" value="{{product.get_absolute_url}}">
-                <button type="submit" class="btn_korz"> <img src="{% static 'content/img/kzn.png' %}" height="30px" class="korz-detail" alt="+++"> </button>
-
-            </form>
-
-
-
-
-
-
         </div>
-        <div class="col float-right">
-            <div class="border p-2 m-2">
+        <div class="col float-right mt-3">
+            <h1>{{ object.title }}</h1>
+            <div class="row">
+                {% if object.yulia %}
+                    <p class="margin">ЮЛИЯ РЕКОМЕНДУЕТ</p>
+                {% endif %}
+                {% if object.darina %}
+                    <p class="margin">ДАРИНА РЕКОМЕНДУЕТ</p>
+                {% endif %}
+                    <p class="marg">АРТИКУЛ:{{object.vendorСode}} </p>
+            </div>
+
+            <hr>
+            <div class="btn_prise">
+                <div class="row">
+                    <div class="price price_detail">
+                        {{product.prise1}} грн.
+                    </div>
+                    <div class="row btns">
+                        <div class="bttn">
+                            <form class="form-prod">
+                                {% csrf_token %}
+                                <input class="same-info" type="hidden" name="info" value="{{product.slug}}">
+                                <button type="submit" class="btn_korz">
+                                    <input type="hidden" class="main_price" readonly value="{{product.prise1}}">
+                                    <input type="hidden" class="main_volume" readonly value="{{product.volume1}}">
+                                    <img src="{% static 'content/img/kzn.png' %}" class="korz" alt="+++">
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+             <div class="btn_volume">
+                <div class="row btn">
+                    {% if product.volumeTrue %}
+                        <button class="btn_volume_1" disabled="true">
+                            {{product.volume1}}ml
+                            <input type="hidden" class="btn_prise1" readonly value="{{product.prise1}}">
+                            <input type="hidden" class="btn_volume1" readonly value="{{product.volume1}}">
+                            <input type="hidden" class="slug" readonly value="{{ product.slug }}">
+                        </button>
+
+                        <button class="btn_volume_2">
+                            {{product.volume2}}ml
+                            <input type="hidden" class="btn_prise2" readonly value="{{product.prise2}}">
+                            <input type="hidden" class="btn_volume2" readonly value="{{product.volume2}}">
+                            <input type="hidden" class="slug" readonly value="{{ product.slug }}">
+                        </button>
+                    {% else %}
+                        {% if product.volume1 %}
+                        <button class="btn_volume_1" disabled="true">{{product.volume1}}ml</button>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            <hr>
+
+
+
+
+
+
+
+            <div class=" p-2 m-1">
                 <h5>Описание товара</h5>
+
+                <p>{{object.description|linebreaks}}</p>
                 <hr>
-                <p>{{object.description}}</p>
+                {% if object.complect  %}
+                    <h5>В комплекте:</h5>
+                    <p>{{ object.complect|linebreaks }}</p>
+                    <hr>
+                {% endif %}
+
+
+                {% if object.grup_aromat  %}
+                    <h6>ГРУППА АРОМАТА</h6>
+                    <p>{{ object.grup_aromat }}</p>
+                    <hr>
+                {% endif %}
+                {% if object.top_notes  %}
+                    <h6>ВЕРХНИЕ НОТЫ •</h6>
+                    <p>{{ object.top_notes }}</p>
+                    <hr>
+                {% endif %}
+                {% if object.heart_notes  %}
+                    <h6>НОТЫ СЕРДЦА • •</h6>
+                    <p>{{ object.heart_notes }}</p>
+                    <hr>
+                {% endif %}
+                {% if object.base_notes  %}
+                    <h6>БАЗОВЫЕ НОТЫ • • •</h6>
+                    <p>{{ object.base_notes }}</p>
+                    <hr>
+                {% endif %}
+
+
+
             </div>
-            <div class="border p-2 m-2">
-                <h5>Оплата </h5>
-                <hr>
-                <p>Наличная, Картой онлайн, Google Pay, Безналичными для юридических лиц, Безналичными для физических лиц, PrivatPay, Apple Pay</p>
-            </div>
-            <div class="border p-2 m-2">
-                <h5>Гарантия </h5>
-                <hr>
-                <p>Обмен/возврат товара в течение 14 дней</p>
-            </div>
+
         </div>
     </div>
 

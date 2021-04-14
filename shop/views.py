@@ -2,13 +2,14 @@ from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from .models import *
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 
 
 
 
 
 class Shop_main(ListView):
-    paginate_by = 4 #количество элементов на странице
+    paginate_by = 3 #количество элементов на странице
     model = Product
     template_name = 'shop/shop_main.html'
     context_object_name = 'products'
@@ -20,19 +21,54 @@ class Shop_main(ListView):
         return ctx
 
 
-class Shop_category(DetailView):
-    model = Category
-    template_name = 'shop/shop_category.html'
-    #context_object_name = 'products_category'
 
+
+
+
+class Shop_category(ListView, Paginator):
+
+    paginate_by = 1
+    template_name = 'shop/shop_category.html'
+    ordering = ['-id']
+    context_object_name = 'object'
+
+    # Big_list = {
+    #     'sanitayzery' : Sanitayzery,
+    #     'parfyumy-v-mashinu' :Parfyumy_v_mashinu,
+    #     'svechi': Svechi,
+    #     'ukhod' : Ukhod,
+    #     'sertifikaty' : Sertifikaty,
+    #     'aromaty-dlya-doma' : Aromaty_dlya_doma,
+    #     'travel-versii' : Travel_versii,
+    #     'parfyumy' : Parfyumy,
+    #     'nabory' : Nabory,
+    #     'bestsellers' : Product,
+    #     'novinki' : Product
+    # }
+
+    def dispatch(self, request, *args, **kwargs):
+        slug = (self.request.path).split('/')[-1]
+        print(slug, '9999')
+        self.model = Product
+        if slug == 'bestsellers':
+            self.queryset = Product.objects.filter(bestsellerTrue=True)
+        elif slug == 'novinki':
+            self.queryset = Product.objects.filter(newTrue=True)
+        else:
+            self.queryset = Product.objects.filter(category__slug=slug)
+            print(self.queryset, '1999')
+
+        return super().dispatch(request, *args, **kwargs)
 
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        dd = (self.request.path).split('/')[-1]
+        print(dd, '123')
         ctx = super(Shop_category, self).get_context_data(**kwargs)
-        slug = self.kwargs.get(self.slug_url_kwarg, None)
+        #ctx = Product.objects.filter(vendorСode__icontains='1234')
         ctx['products'] = Product.objects.all()
         ctx['category'] = Category.objects.all()
-        ctx['slug'] = slug
+        #ctx['slug'] = slug
         return ctx
 
 
@@ -40,13 +76,14 @@ class Shop_detail_page(DetailView):
 
     template_name = 'shop/shop_detail.html'
 
-    CT_MODEL_MODEL_CLASS = {
-        'bestsellers': ProductBestsellers,
-        'set': ProductSet
-    }
+    # CT_MODEL_MODEL_CLASS = {
+    #     'bestsellers': Product,
+    #     'set': Product,
+    #
+    # }
 
     def dispatch(self, request, *args, **kwargs):
-        self.model = self.CT_MODEL_MODEL_CLASS[kwargs['category']]
+        self.model = Product
         self.queryset = self.model._base_manager.all()
         return super().dispatch(request, *args, **kwargs)
 
@@ -55,10 +92,8 @@ class Shop_detail_page(DetailView):
         ctx = super(Shop_detail_page, self).get_context_data(**kwargs)
         request = self.request
         session_key = request.session.session_key
-        print(session_key)
         if not session_key:
             request.session.cycle_key()
-        print(self.object.category)
         return ctx
 
 
@@ -68,19 +103,44 @@ def basket_adding(request):
     data = request.POST
     return_dick = dict()
     slug = data['slug']
-    print(slug)
+    product_by_slug = (Product.objects.filter(slug=slug))[0]
+
+    price = data['price']
+
+    volume = data['volume']
+    if volume == 'None':
+        volume = 0
+
     session_key = request.session.session_key
-    new = Basket(session_key=session_key, slug=slug)
+
+    if not session_key:
+        session_key = request.session.cycle_key()
 
 
-    if not Basket.objects.filter(session_key=session_key, slug=slug).exists():
+
+
+    if not Basket.objects.filter(session_key=session_key, slug=slug, price=price).exists():
+        new = Basket(session_key=session_key,
+                     slug=slug,
+                     title=product_by_slug.title,
+                     vendorСode=product_by_slug.vendorСode,
+                     category=product_by_slug.category,
+                     volume=volume,
+                     price=price,
+                     quantity=1,
+                     img_url=product_by_slug.img.url
+                     )
         new.save()
+        some = 1
+
     else:
-        var = (Basket.objects.filter(session_key=session_key, slug=slug))[0]
-        quantity_new = (Basket.objects.filter(session_key=session_key, slug=slug))[0].quantity + 1
-        var.quantity = quantity_new
+        var = (Basket.objects.filter(session_key=session_key, slug=slug, price=price))[0]
+        var.quantity += 1
         var.save()
-    return_dick = {'quantity_new': quantity_new, 'key': 0}
+        #price = var.price
+        some = var.quantity
+
+    return_dick = {'quantity_new': some, 'key': 0, 'price':price, }
     return JsonResponse(return_dick)
 
 
@@ -89,22 +149,24 @@ def basket_minus(request):
     data = request.POST
     return_dick = dict()
     slug = data['slug']
+    price = data['price']
 
     session_key = request.session.session_key
+
     new = Basket(session_key=session_key, slug=slug)
 
 
-    if not Basket.objects.filter(session_key=session_key, slug=slug).exists():
+    if not Basket.objects.filter(session_key=session_key, slug=slug, price=price).exists():
         new.save()
     else:
-        var = (Basket.objects.filter(session_key=session_key, slug=slug))[0]
+        var = (Basket.objects.filter(session_key=session_key, slug=slug, price=price))[0]
         print('123123123123')
-        quantity_new = (Basket.objects.filter(session_key=session_key, slug=slug))[0].quantity
+        quantity_new = var.quantity
         if quantity_new > 1:
-            quantity_new = (Basket.objects.filter(session_key=session_key, slug=slug))[0].quantity - 1
-            var.quantity = quantity_new
+            # quantity_new = quantity_new - 1
+            var.quantity = quantity_new - 1
             var.save()
-            return_dick = {'quantity_new': quantity_new, 'key': 1}
+            return_dick = {'quantity_new': var.quantity, 'key': 1, 'price':price}
             return JsonResponse(return_dick)
         else:
             var.delete()
@@ -118,11 +180,13 @@ def basket(request):
 
     data = request.POST
     session_key = request.session.session_key
+    if not session_key:
+        session_key = request.session.cycle_key()
+        print(request.session.cycle_key())
     print(data)
     basket_total_quantity = Basket.objects.filter(session_key=session_key)
     sum = 0
     for i in basket_total_quantity:
-        print(i.slug)
         sum += i.quantity
 
     return_dick = {'sum': sum}
@@ -143,18 +207,7 @@ class you_basket(ListView):
         request = self.request
         session_key = request.session.session_key
         basket_total_quantity = Basket.objects.filter(session_key=session_key)
-        ctx['Product'] = Product
-        deffi = {}
-        for i in basket_total_quantity:
-            deffi[i.slug] = i.quantity
-        ctx['deffi'] = deffi
-        print(ctx['deffi'], 'yyyyyyyyyyy')
-
-
-
-
-
-
+        ctx['basket'] = basket_total_quantity
         return ctx
 
 
