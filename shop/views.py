@@ -4,6 +4,8 @@ from .models import *
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 
+from django.shortcuts import redirect
+
 
 
 
@@ -27,7 +29,7 @@ class Shop_main(ListView):
 
 class Shop_category(ListView, Paginator):
 
-    paginate_by = 1
+    paginate_by = 2
     template_name = 'shop/shop_category.html'
     ordering = ['-id']
     context_object_name = 'object'
@@ -48,7 +50,6 @@ class Shop_category(ListView, Paginator):
 
     def dispatch(self, request, *args, **kwargs):
         slug = (self.request.path).split('/')[-1]
-        print(slug, '9999')
         self.model = Product
         if slug == 'bestsellers':
             self.queryset = Product.objects.filter(bestsellerTrue=True)
@@ -201,8 +202,10 @@ class you_basket(ListView):
     template_name = 'shop/you_basket.html'
     ordering = ['-id']
 
-    def get_context_data(self, *, object_list=None, **kwargs):
 
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        print(self.request.method)
         ctx = super(you_basket, self).get_context_data(**kwargs)
         request = self.request
         session_key = request.session.session_key
@@ -211,4 +214,41 @@ class you_basket(ListView):
         return ctx
 
 
+def search(request):
+    data = request.POST
+    some = Product.objects.filter(title__icontains=data['val'])
+    return_dick = {}
+    for i in some:
+        return_dick[i.title] = i.category.slug + '/' + i.slug
+    some2 = Category.objects.filter(title__icontains=data['val'])
+    for i in some2:
+        return_dick[i.title] = i.slug
 
+    print(return_dick)
+    return JsonResponse(return_dick)
+
+
+
+def order(request):
+
+    session_key = request.session.session_key
+    data = request.POST
+    print(session_key)
+    print(data['phone'])
+    var = (Basket.objects.filter(session_key=session_key))
+    products = ''
+    for i in var:
+        products += 'Товар-'+ i.title + ',  Артикул-' + i.vendorСode + ', Объем-'\
+                    + str(i.volume) + ', Количество-' + str(i.quantity) + '\r\n'
+
+    var.delete()
+    new = Order(name=data['info'],
+                phone=data['phone'],
+                comment=data['description'],
+                delivery=('Город: ' + data['town'] + '\r\n' + 'Отделение: ' + data['branches']),
+                products=products
+                )
+    new.save()
+
+    return_dick = {}
+    return JsonResponse(return_dick)

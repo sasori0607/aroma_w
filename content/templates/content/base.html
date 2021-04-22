@@ -35,27 +35,74 @@
 
                     <div class="menu ">
                         <ul class="row">
-                            <li><div>Поиск</div></li>
+                            <li><div class="search">
+                                <img src="{% static 'content/img/search.png' %}" height="25px;" alt="">
+                            </div></li>
+
                             <li class="">
                                 <form class="basket navbar-brand">
                                     {% csrf_token %}
                                     <a href="{% url 'you_basket' %}">
-                                        <img src="{% static 'content/img/kzn.png' %}" height="40px;" alt="">
+                                        <img src="{% static 'content/img/cart.png' %}" height="30px;" alt="">
                                         <div class="basket_item">0</div>
                                     </a>
 
                                 </form>
+
                             </li>
                             <li id="menuCheck"><img src="{% static 'content/img/menu.png' %}" width="40px" alt=""></li>
                             <li>
-                                <div class="newLayer row">
-                                    <div id="menu"class="col-md-5">
-                                        <ul>
-                                            <div class="close">x</div>
+                                <div  class="newLayer row">
+                                    <div id="menu"class="col-lg-5">
 
-                                        </ul>
+                                        <div class="close">x</div>
+                                        <div class="body_menu_1 mt-2 ml-sm-5">
+                                            <div style="" class="row" >
+                                                <div class="col-md-6 " style="margin-bottom: 15px; margin-top: 15px; " >
+                                                    <p class="mb-3"><a style="font-weight: bolder" href="{%url 'shop_main'%}">Магазин</a></p>
+                                                    <p><a class="" href="/shop/nabory">Наборы</a></p>
+                                                    <p><a class="" href="/shop/bestsellers">Bestsellers</a></p>
+                                                    <p><a class="" href="/shop/novinki">Новинки</a></p>
+                                                    <p><a class="" href="/shop/parfyumy">Парфюмы</a></p>
+                                                    <p><a class="" href="/shop/travel-versii">Travel версии</a></p>
+                                                    <p><a class="" href="/shop/aromaty-dlya-doma">Ароматы для дома</a></p>
+                                                    <p><a class="" href="/shop/sertifikaty">Сертификаты</a></p>
+                                                    <p><a class="" href="/shop/ukhod">Уход за телом</a></p>
+                                                    <p><a class="" href="/shop/svechi">Свечи</a></p>
+                                                    <p><a class="" href="/shop/parfyumy-v-mashinu">Ароматы в авто</a></p>
+                                                    <p><a class="" href="/shop/sanitayzery">Санитайзеры</a></p>
+
+                                                </div>
+                                                <div  class="col-md-6" style="margin-bottom: 15px; margin-top: 15px; ">
+                                                   <p class="mb-3"><a style="font-weight: bolder" href="/contact">Где купить</a></p>
+                                                    <p><a href="mailto:info@sistersaroma.com">info@sistersaroma.com</a></p>
+
+                                                    <p class="mt-4"><a href="tel:0800332659">0 800 33 26 59</a></p>
+                                                    <p class="p-title">По общим вопросам</p>
+                                                    <p class="">Пн - Вс c 09:00 до 23:00<br>
+                                                    по киевскому времени</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="body_menu_2 ml-sm-5">
+                                            <div style="margin-bottom: 15px; margin-top: 15px; " class="row">
+                                                <div class="col-md-6">
+                                                    <p class=""><a style="font-weight: bolder" href="/about">О нас</a></p>
+                                                    <p class=""><a style="font-weight: bolder" href="/delivery">Доставка и оплата</a></p>
+                                                    <p class=""><a style="font-weight: bolder" href="/return">Обмен и возврат</a></p>
+                                                    <p class=""><a style="font-weight: bolder" href="/blog">Блог</a></p>
+
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p class=""><a style="font-weight: bolder" href="/privacy">Политика конф.</a></p>
+                                                    <p class=""><a style="font-weight: bolder" href="/oferta">Публичная оферта</a></p>
+
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="black col-md-7  ">+</div>
+                                    <div class="black col-md-7  "></div>
                                 </div>
                             </li>
                         </ul>
@@ -64,6 +111,17 @@
             </div>
         </div>
     </nav>
+
+    <div style="background: white;">
+        <div class="search_form">
+            <input type="text" placeholder="Введите текст для поиска">
+            <li class="list-group list-group-search">
+
+
+            </li>
+        </div>
+    </div>
+
 
     <div class="content">
     {% if messages %}
@@ -79,22 +137,45 @@
     </div>
 
 
-    <footer class="footer">
+    <footer class="footer pt-4 pb-3">
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
-                    <h6>Магазин</h6>
+                    <p class="mb-3"><a style="font-weight: bolder" href="{%url 'shop_main'%}">Магазин</a></p>
+                    <p><a class="" href="/shop/nabory">Наборы</a></p>
+                    <p><a class="" href="/shop/bestsellers">Bestsellers</a></p>
+                    <p><a class="" href="/shop/novinki">Новинки</a></p>
+                    <p><a class="" href="/shop/parfyumy">Парфюмы</a></p>
+                    <p><a class="" href="/shop/travel-versii">Travel версии</a></p>
+                    <p><a class="" href="/shop/aromaty-dlya-doma">Ароматы для дома</a></p>
+                    <p><a class="" href="/shop/sertifikaty">Сертификаты</a></p>
+                    <p><a class="" href="/shop/ukhod">Уход за телом</a></p>
+                    <p><a class="" href="/shop/svechi">Свечи</a></p>
+                    <p><a class="" href="/shop/parfyumy-v-mashinu">Ароматы в авто</a></p>
+                    <p><a class="" href="/shop/sanitayzery">Санитайзеры</a></p>
                 </div>
                 <div class="col-md-3">
-                    <h6>О нас</h6>
+                    <p class=""><a style="font-weight: bolder" href="/about">О нас</a></p>
+                    <p class=""><a style="font-weight: bolder" href="/delivery">Доставка и оплата</a></p>
+                    <p class=""><a style="font-weight: bolder" href="/return">Обмен и возврат</a></p>
+                    <p class=""><a style="font-weight: bolder" href="/blog">Блог</a></p>
                 </div>
                 <div class="col-md-3">
-                    <h6>Магазин</h6>
+                    <p class=""><a style="font-weight: bolder" href="/privacy">Политика конф.</a></p>
+                    <p class=""><a style="font-weight: bolder" href="/oferta">Публичная оферта</a></p>
+
                 </div>
                 <div class="col-md-3">
-                    <h6>Магазин</h6>
+                   <p><a href="mailto:info@sistersaroma.com">info@sistersaroma.com</a></p>
+
+                    <p class="mt-4"><a href="tel:0800332659">0 800 33 26 59</a></p>
+                    <p class="p-title">По общим вопросам</p>
+                    <p class="">Пн - Вс c 09:00 до 23:00<br>
+                    по киевскому времени</p>
                 </div>
             </div>
+            <p class="mt-3">© SISTERS AROMA 2018 — 2021</p>
+
         </div>
     </footer>
 

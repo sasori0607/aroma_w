@@ -83,3 +83,22 @@ class Basket(models.Model):
         return reverse('shop_detail', kwargs={'slug': self.slug, 'category': self.category})
 
 
+
+class Order(models.Model):
+
+    name = models.CharField(max_length=256, verbose_name="ФИО")
+    phone = models.CharField(verbose_name="Телефон", max_length=64)
+    comment = models.TextField(verbose_name='Коментарий', null=True, blank=True)
+    delivery = models.TextField(verbose_name='Доставка')
+    products = models.TextField(verbose_name='Заказ')
+
+
+    class Meta:
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
+
+    def __str__(self):
+        return self.name
+
+
+

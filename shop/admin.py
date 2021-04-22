@@ -18,7 +18,8 @@ class OllCheck(admin.ModelAdmin):
 admin.site.register(Product, OllCheck)
 admin.site.register(Category)
 admin.site.register(Basket)
-#admin.site.register(Some, OllCheck)
+admin.site.register(Order)
+
 
 
 

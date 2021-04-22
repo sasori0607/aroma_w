@@ -1,0 +1,48 @@
+
+<div class="form_basket">
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="closer">X</div>
+        <div class="fieldWrapper">
+            <h5>Заказ</h5>
+        </div>
+
+        <hr>
+        <div class="fieldWrapper ">
+             <p>Имя и Фамилия</p>
+            <input required id="form_name" type="text" name="tel">
+        </div>
+        <div class="fieldWrapper">
+             <p>Ваш телефон </p>
+             <input id="form_phone" type="tel" placeholder="+380123456789" name="tel" >
+        </div>
+
+        <div class="fieldWrapper">
+            <p style="padding:0px; margin:0px;">Комментарии к заказу:</p>
+            <p style="font-size:10px; padding:0px; margin:0px;">Не обязательно</p>
+            <textarea id="form_description" cols="4" class=""></textarea>
+        </div>
+
+        <div class="fieldWrapper npc">
+            <input class="inputH" type="hidden" value="">
+            <p>Выберите Город</p>
+            <input id="form_town" class="input" type="text">
+            <li class="list-group list-group-search-town">
+
+            </li>
+        </div>
+         <div class="fieldWrapper branches">
+            <p>Выберите Отделение Новой почты</p>
+            <input id="form_branches" type="text">
+            <li class="list-group list-group-search-description">
+
+            </li>
+        </div>
+
+        <div class="btt btn">
+            <button type="submit">Оформить</button>
+        </div>
+        </form>
+
+
+</div>
