@@ -3,6 +3,7 @@ from django.views.generic import ListView, DetailView
 from .models import *
 from django.http import JsonResponse
 from django.core.paginator import Paginator
+from django.contrib import messages
 
 from django.shortcuts import redirect
 
@@ -251,4 +252,5 @@ def order(request):
     new.save()
 
     return_dick = {}
+    messages.success(request, 'Ваш заказ принят, наш менеджер свяжется с вами!')
     return JsonResponse(return_dick)
