@@ -7,7 +7,7 @@ Development setup
 In a Python 3.8.8 virtual environment:
 
     $ cd requirements
-    $ pip install -r development.txt
+    $ pip install -r requirements.txt
     $ cd ..
     $ python manage.py migrate
 
